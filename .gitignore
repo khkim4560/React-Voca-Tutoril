@@ -3,6 +3,7 @@
 
 
 # dependencies
+/src_bk
 /package-lock.json
 /node_modules
 /.pnp
