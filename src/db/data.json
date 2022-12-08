@@ -1,0 +1,85 @@
+{
+  "days": [
+    {
+      "id": 1,
+      "day": 1
+    },
+    {
+      "id": 2,
+      "day": 2
+    },
+    {
+      "id": 3,
+      "day": 3
+    },
+    {
+      "day": 4,
+      "id": 4
+    }
+  ],
+  "words": [
+    {
+      "day": 1,
+      "eng": "book",
+      "kor": "책",
+      "id": 1,
+      "isDone": false
+    },
+    {
+      "day": 2,
+      "eng": "car",
+      "kor": "자동차",
+      "id": 3,
+      "isDone": false
+    },
+    {
+      "day": 3,
+      "eng": "school",
+      "kor": "학교",
+      "id": 5,
+      "isDone": false
+    },
+    {
+      "day": 3,
+      "eng": "pencil",
+      "kor": "연필",
+      "id": 6,
+      "isDone": false
+    },
+    {
+      "day": "3",
+      "eng": "window",
+      "kor": "창문",
+      "id": 7,
+      "isDone": false
+    },
+    {
+      "day": "3",
+      "eng": "house",
+      "kor": "집",
+      "id": 8,
+      "isDone": false
+    },
+    {
+      "day": "4",
+      "eng": "apple",
+      "kor": "사과",
+      "isDone": false,
+      "id": 11
+    },
+    {
+      "eng": "window",
+      "kor": "창문",
+      "day": "3",
+      "isDone": false,
+      "id": 12
+    },
+    {
+      "eng": "doc",
+      "kor": "강아지",
+      "day": "1",
+      "isDone": false,
+      "id": 13
+    }
+  ]
+}
