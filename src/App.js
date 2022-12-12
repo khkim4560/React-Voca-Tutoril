@@ -6,6 +6,8 @@ import EmptPage from './component/EmptPage';
 import {BrowserRouter,Route,Routes} from'react-router-dom';
 import CreateWord from './component/CreateWord';
 import CreateDay from './component/CreateDay';
+import DeleteDay from './component/DeleteDay';
+
 
 
 function App() {
@@ -20,11 +22,13 @@ function App() {
 
             <Route exact path='/' element={<DayList/>} />
 
-            <Route path='/day/:day' element={<Day/>} ></Route>
+            <Route exact path='/day/:day' element={<Day/>} ></Route>
 
-            <Route path='/day/create_word' element={<CreateWord/>} ></Route>
+            <Route exact path='/day/create_word' element={<CreateWord/>}></Route>
             
-            <Route path='/day/create_day' element={<CreateDay/>} ></Route>
+            <Route exact path='/day/create_day' element={<CreateDay/>}></Route>
+
+            <Route exact path='/day/delete_day' element={<DeleteDay/>}></Route>
 
             <Route exact path="/*" element={<EmptPage/>} />
             

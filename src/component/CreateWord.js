@@ -1,76 +1,89 @@
-import { useState } from "react";
+import React from 'react';
+import { useHistory } from 'react-router-dom'; // 설치한 패키지
+import { useState ,useEffect, useRef} from "react";
+import { useNavigate } from 'react-router-dom';
 
 
-	function CreateWord(props) {		
+	function CreateDay(props) {				
+	
+		const [days,setDays] = useState([]);
+		const navigate = useNavigate();
+		const [saveState,setSaveState] = useState(true);
+		const engReg = useRef(null);
+		const korReg = useRef(null);
+		const dayReg = useRef(null);
 		
-		//const word = props;
-		//console.log("word" ,word );
+		//const history = useHistory();
+		    		 
+		useEffect(()=>{
+			  //console.log("Count Change");
+			  fetch(`http://localhost:3001/days`)
+			  .then(res =>{
+				  return res.json();
+			  })
+			  .then(data => {
+				  setDays(data);
+			  })
+		}, []);
+
 		
-		//state 사용변수 선언
-		const [word, setWord] = useState(props);
-		const [isShow, setIsShow] = useState(true);
-		const [isDone, setIsDone] = useState(word.isDone);
 
-		//뜻 보기
-		const toggleShow=()=>{			
-			const swtchYn =isShow;
-			setIsShow((!swtchYn));
-			//console.log(isShow);
-		}
-
-		//체크박스 체인지
-		const toggleCheck=()=>{						
-			//const swtchYn =isDone;
-			//setIsDone((!swtchYn));
-			//console.log(isDone);
-			fetch(`http://localhost:3001/words/${word.id}`,{
-				method : "PUT",
+		//단어 저장 버튼 클릭
+		const toggleCreateWord=(e)=>{						
+			e.preventDefault();
+			setSaveState(false);
+			//console.log(engReg.current.value);
+			//console.log(korReg.current.value);
+			//console.log(dayReg.current.value);
+			
+			fetch(`http://localhost:3001/words/`,{
+				method : "POST",
 				headers : {
 					"Content-Type" : "application/json",
 				},
-				body : JSON.stringify({...word,isDone : !isDone})
-				}).then(res =>{
-					if(res.ok){
-						setIsDone(!isDone);
-					}
-			});
-		}
-
-		const toggleDelete=()=>{						
-			
-			if(!window.confirm("삭제 하시겠습니가?")){
-				return false;
-			}
-
-			fetch(`http://localhost:3001/words/${word.id}`,{
-					method : "DELETE"				
-				}
-			).then(res => {
+				body : JSON.stringify
+				({
+					eng : engReg.current.value,
+					kor : korReg.current.value,
+					day : dayReg.current.value,
+					isDone : false,
+				})
+			})
+			.then(res =>{
 				if(res.ok){
-					setWord({id : 0 });					
-				}				
+					alert("생성이 완료 되었습니다.");
+					navigate(`/day/${dayReg.current.value}`,false);					
+					
+				}
+				setSaveState(true);
 			});
-		}
-
-		//id가 0인항목은 아래 리턴값을 실행하지 않고 null로 리턴
-		if(word.id ===0){
-			return null;
 		}
 
 		return (
-				//1.직접 스타일 적용
-				// <tr key={word.id} style={isDone ? {backgroundColor :  '#eee', color: '#ccc'} : {backgroundColor :  '', color: ''}}> 
-				//2.클래스 적용(classNmae을 사용하기를 권고!!)
-				<tr key={word.id} className={isDone ? "off" : "" }> 
-				<td><input type="checkbox" checked={isDone} onChange={()=>{
-					toggleCheck();
-				}}></input></td>
-				<td>{word.eng}</td>
-				<td> { isShow ? word.kor : ""}</td> 
-				<td><button  onClick={toggleShow} >뜻{ isShow ? "숨김": "보기"} </button>
-				<button className="btn_del" onClick={toggleDelete}>삭제</button></td> 
-			</tr>		
+			<form>
+				<div className="input_area">
+					<label>Eng</label>					
+					<input type="text" placeholder="computer" ref={engReg} />
+				</div>
+				<div className="input_area">
+					<label>Kor</label>					
+					<input type="text" placeholder="컴퓨터" ref={korReg}/>
+				</div>
+				<div className="input_area">
+					<label>Day</label>					
+					<select ref={dayReg} >
+					{
+					days.map(day => (
+                    	<option key={day.day} id={day.day} value={day.day}>{day.day}</option>
+                	))
+					}              						
+					</select>
+				</div>
+				
+				{saveState ?<button onClick={toggleCreateWord}>저장</button>: <button >저장중...</button> }				
+			</form>	
+			
 	  );
 	}
 
-	export default CreateWord;
+	export default CreateDay;

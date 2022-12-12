@@ -13,8 +13,8 @@
       "day": 3
     },
     {
-      "day": 4,
-      "id": 4
+      "id": 4,
+      "day": 4
     }
   ],
   "words": [
@@ -75,11 +75,39 @@
       "id": 12
     },
     {
+      "eng": "city",
+      "kor": "도시",
+      "day": "4",
+      "isDone": false,
+      "id": 14
+    },
+    {
+      "day": "6",
       "eng": "doc",
       "kor": "강아지",
+      "id": 15,
+      "isDone": false
+    },
+    {
+      "eng": "arms",
+      "kor": "무기",
       "day": "1",
       "isDone": false,
-      "id": 13
+      "id": 16
+    },
+    {
+      "eng": "bank",
+      "kor": "은행",
+      "day": "11",
+      "isDone": false,
+      "id": 17
+    },
+    {
+      "eng": "apply",
+      "kor": "사과",
+      "day": "3",
+      "isDone": false,
+      "id": 18
     }
   ]
 }

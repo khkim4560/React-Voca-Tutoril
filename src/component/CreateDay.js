@@ -1,56 +1,65 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom'; // 설치한 패키지
-import { useState ,useEffect, useRef} from "react";
-
+import { useState ,useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 	function CreateDay(props) {				
 	
 		const [days,setDays] = useState([]);
-		const engReg = useRef(null);
-		const korReg = useRef(null);
-		const dayReg = useRef(null);
-		//const history = useHistory();
+		const [saveDay,setSaveDay] = useState([]);
+		const navigate = useNavigate();
+		const [saveState,setSaveState] = useState(true);
 		
-
-    		 
 		useEffect(()=>{
-			  //console.log("Count Change");
-			  fetch(`http://localhost:3001/days`)
-			  .then(res =>{
-				  return res.json();
-			  })
-			  .then(data => {
-				  setDays(data);
-			  })
+			//console.log("Count Change");
+			fetch(`http://localhost:3001/days`)
+			.then(res =>{
+				return res.json();
+			})
+			.then(data => {
+				
+				setDays(data);
+
+				//Day max value get
+				let idData = data.map(function(v){
+					return v.id;
+				});
+
+				const dayMax = Math.max.apply(null,idData);
+
+				console.log("dayMax" ,dayMax);
+
+				if(dayMax===null || dayMax===undefined || dayMax==='' || dayMax== -Infinity){
+					setSaveDay(1);
+				}else{
+					setSaveDay((dayMax+1));
+				}
+         	})
 		}, []);
-
 		
-
-		//체크박스 체인지
-		const toggleCreateWord=(e)=>{						
+		//
+		const toggleCreateDay=(e)=>{						
+			
 			e.preventDefault();
 			
-			//console.log(engReg.current.value);
-			//console.log(korReg.current.value);
-			//console.log(dayReg.current.value);
-			
-			fetch(`http://localhost:3001/words/`,{
+			setSaveState(false);
+
+			fetch(`http://localhost:3001/days/`,{
 				method : "POST",
 				headers : {
 					"Content-Type" : "application/json",
 				},
 				body : JSON.stringify
 				({
-					eng : engReg.current.value,
-					kor : korReg.current.value,
-					day : dayReg.current.value,
-					isDone : false,
+					id  : saveDay,
+					day : saveDay
 				})
 			})
 			.then(res =>{
+				setSaveState(true);
 				if(res.ok){
-					alert("생성이 완료 되었습니다.");
-					//history.push(`/day/${dayReg.current.value}`);
+					alert(`${saveDay} Day 생성이 완료 되었습니다.`);
+					navigate(`/day/${saveDay}`,false);
+					navigate('/',false);					
 				}
 			});
 		}
@@ -58,26 +67,10 @@ import { useState ,useEffect, useRef} from "react";
 		return (
 			<form>
 				<div className="input_area">
-					<label>Eng</label>					
-					<input type="text" placeholder="computer" ref={engReg} />
-				</div>
-				<div className="input_area">
-					<label>Kor</label>					
-					<input type="text" placeholder="컴퓨터" ref={korReg}/>
-				</div>
-				<div className="input_area">
-					<label>Day</label>					
-					<select ref={dayReg} >
-					{
-					days.map(day => (
-                    	<option id={day.day} value={day.day}>{day.day}</option>
-                	))
-					}              						
-					</select>
-				</div>
-				<button onClick={toggleCreateWord}>저장</button>
-			</form>	
-			
+					<label>Save Day : {saveDay} </label>										
+				</div>				
+				{saveState ?<button onClick={toggleCreateDay}>저장</button>: <button >저장중...</button> }				
+			</form>
 	  );
 	}
 
